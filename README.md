@@ -23,7 +23,7 @@ cargo run --release
 
 ## Results
 
-When comparing with the C benchmark on the same machine:
+When comparing with the C (`-O3`) and Julia benchmarks on the same machine:
 
 ![](graph.png)
 
