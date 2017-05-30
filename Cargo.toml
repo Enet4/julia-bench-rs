@@ -1,0 +1,11 @@
+[package]
+authors = ["Eduardo Pinho <enet4mikeenet@gmail.com>"]
+name = "julia-bench"
+version = "0.1.0"
+license = "MIT/Apache-2.0"
+
+[dependencies]
+blas = { version = "0.15.4", features = ["openblas"] }
+mersenne_twister = "1.1.0"
+num = "0.1.37"
+rand = "0.3.15"
