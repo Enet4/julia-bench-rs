@@ -36,7 +36,7 @@ fn fib(n: i32) -> i32 {
     if n < 2 {
         n
     } else {
-        fib(n - 1) + fib(n - 2)
+        fib(black_box(n - 1)) + fib(black_box(n - 2))
     }
 }
 
@@ -258,7 +258,7 @@ fn measure_best<F: FnMut()>(niters: u32, mut op: F) -> Duration {
         .map(move |_| {
             let t = Instant::now();
             op();
-            Instant::now() - t
+            t.elapsed()
         }).min().unwrap()
 }
 
@@ -272,8 +272,7 @@ fn main() {
     let fibarg = black_box(20);
     let tmin = measure_best(NITER, || {
         for _ in 0..1000 {
-            f = f.wrapping_add(
-                black_box(fib(fibarg)));
+            f = f.wrapping_add(fib(fibarg));
         }
     });
     print_perf("fib", to_float(tmin) / 1000.0);
