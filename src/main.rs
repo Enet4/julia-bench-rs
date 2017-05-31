@@ -16,7 +16,14 @@ use blas::c::{dgemm, Layout, Transpose};
 use test::black_box;
 use num::complex::Complex64;
 use rand::{SeedableRng, Rng};
-use mersenne_twister::MT19937;
+use mersenne_twister::MT19937_64;
+
+type MTRng = MT19937_64;
+
+#[inline]
+fn gen_rng(seed: u64) -> MTRng {
+    MTRng::from_seed(seed)
+}
 
 const NITER: u32 = 5;
 
@@ -81,7 +88,7 @@ fn pisum() -> f64 {
 }
 
 fn randmatstat(t: usize) -> (f64, f64) {
-    let mut rng = MT19937::from_seed(1234u32);
+    let mut rng = gen_rng(1234u64);
 
     let n = 5;
 
@@ -230,10 +237,6 @@ fn quicksort(mut a: &mut [f64], mut lo: usize) {
     }
 }
 
-fn init_gen_rand(seed: u32) -> MT19937 {
-    MT19937::from_seed(seed)
-}
-
 fn printfd(n: usize) {
     let f = OpenOptions::new()
         .write(true).open("/dev/null").unwrap();
@@ -264,7 +267,7 @@ fn measure_best<F: FnMut()>(niters: u32, mut op: F) -> Duration {
 
 fn main() {
     // initialize RNG
-    let mut rng = init_gen_rand(0);
+    let mut rng = gen_rng(0);
 
     // fib(20)
     assert_eq!(fib(20), 6765);
