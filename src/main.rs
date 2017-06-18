@@ -247,7 +247,7 @@ fn printfd(n: usize) {
 }
 
 fn print_perf(name: &str, t: f64) {
-    println!("rust,{},{:.9}", name, t * 1000.);
+    println!("rust,{},{:.6}", name, t * 1000.);
 }
 
 /// convert duration to float in seconds
