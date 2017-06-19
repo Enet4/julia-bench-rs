@@ -47,17 +47,18 @@ fn fib(n: i32) -> i32 {
     }
 }
 
-fn mandel(mut z: Complex64) -> u32 {
-    let maxiter = 80;
-    let c = z.clone();
-    for n in 0..maxiter {
-        if z.norm() > 2.0 {
-            return n;
-        }
-        z = z * z + c;
-    }
+fn mandel(z: Complex64) -> u32 {
+    use std::iter;
 
-    maxiter
+    iter::repeat(z)
+        .scan(z, |z, c| {
+            let current = *z;
+            *z = current * current + c;
+            Some(current)
+        })
+        .take(80)
+        .take_while(|z| z.norm() <= 2.0)
+        .count() as u32
 }
 
 fn mandelperf() -> Vec<u32> {
