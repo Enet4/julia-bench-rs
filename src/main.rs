@@ -124,7 +124,7 @@ fn randmatstat(t: usize) -> (f64, f64) {
                     q[2 * n * j + k] = a[k];
                     q[2 * n * j + n + k] = b[k];
                     q[2 * n * (n + j) + k] = c[k];
-                    q[2 * n * (n + j) + n + k] = d[k];                
+                    q[2 * n * (n + j) + n + k] = d[k];
                 }
             }
 
