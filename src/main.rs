@@ -204,7 +204,7 @@ fn test_quicksort() {
     assert_eq!(a, [1., 2., 3., 4., 5., 6., 7., 8., 9., 10.]);
 }
 
-fn quicksort(mut a: &mut [f64], mut lo: usize) {
+fn quicksort(a: &mut [f64], mut lo: usize) {
     let hi = a.len() as usize - 1;
     let mut i: usize = lo;
     // j is isize because it can be -1
