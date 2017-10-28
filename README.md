@@ -9,16 +9,17 @@ The project is experimental, and might still have bugs or unfair optimizations. 
 
 ## Building and running
 
-Use the **nightly** channel of the Rust compiler. With rustup, installing the nightly toolchain and executing `rustup override set nightly` is sufficient. Then:
+This program uses a specific Rust **nightly** toolchain to work. With rustup, installing the toolchain mentioned in [rust-toolchain](rust-toolchain) is sufficient. Then:
 
 ```bash
-# in development mode (no optimizations)
-cargo run
+cargo run --release
 ```
 
+There is also an implementation of the `randmatstat` and `randmatmul` benchmarks which uses the C-style BLAS API directly, but contains unsafe code.
+To run that version instead:
+
 ```bash
-# in release mode (best performance)
-cargo run --release
+cargo run --release --features direct_blas
 ```
 
 ## Results
