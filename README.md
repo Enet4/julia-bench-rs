@@ -3,7 +3,14 @@
 This repository attempts to replicate the [micro benchmark](https://github.com/JuliaLang/julia/tree/master/test/perf/micro) in the Julia repository ([/test/perf](https://github.com/JuliaLang/julia/tree/master/test/perf)) with a Rust implementation, which aims to make a general performance comparison among other programming languages.
 
 The resulting program is based on the C implementation, but it's still mostly idiomatic Rust and does not have unsafe code.
-OpenBLAS is used as the BLAS implementation via the `blas` crate.
+
+This program has two modes:
+
+- By default, benchmarks with matrices (`randmatstat` and `randmatmul`) will use `ndarray` with experimental BLAS support.
+
+- With the `direct_blas` Cargo feature, these benchmarks will use the C BLAS API directly via the `cblas` crate, which is currently faster but requires unsafe code.
+
+In both cases, OpenBLAS is used as the BLAS implementation.
 
 The project is experimental, and might still have bugs or unfair optimizations. Feel free to point them out if you find them.
 
@@ -15,8 +22,7 @@ This program uses a specific Rust **nightly** toolchain to work. With rustup, in
 cargo run --release
 ```
 
-There is also an implementation of the `randmatstat` and `randmatmul` benchmarks which uses the C-style BLAS API directly, but contains unsafe code.
-To run that version instead:
+To run the direct BLAS version instead:
 
 ```bash
 cargo run --release --features direct_blas

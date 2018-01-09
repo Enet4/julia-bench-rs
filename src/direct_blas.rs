@@ -3,7 +3,7 @@
 use rand::Rng;
 use std::iter::Sum;
 use util::{gen_rng, fill_rand, myrand};
-use blas::c::{dgemm, Layout, Transpose};
+use cblas::{dgemm, Layout, Transpose};
 use itertools::Itertools;
 
 pub fn randmatstat(t: usize) -> (f64, f64) {
