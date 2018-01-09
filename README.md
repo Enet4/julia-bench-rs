@@ -1,5 +1,7 @@
 # Julia's micro-bench in Rust
 
+[![Build Status](https://travis-ci.org/Enet4/julia-bench-rs.svg?branch=master)](https://travis-ci.org/Enet4/julia-bench-rs)
+
 This repository attempts to replicate the [micro benchmark](https://github.com/JuliaLang/julia/tree/master/test/perf/micro) in the Julia repository ([/test/perf](https://github.com/JuliaLang/julia/tree/master/test/perf)) with a Rust implementation, which aims to make a general performance comparison among other programming languages.
 
 The resulting program is based on the C implementation, but it's still mostly idiomatic Rust and does not have unsafe code.
