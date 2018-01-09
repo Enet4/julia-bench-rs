@@ -1,4 +1,5 @@
 #![feature(test)]
+#![feature(conservative_impl_trait, universal_impl_trait)]
 #![deny(unsafe_code)]
 
 extern crate itertools;
@@ -46,7 +47,7 @@ use num::Zero;
 const NITER: u32 = 5;
 
 #[cfg(not(feature = "direct_blas"))]
-fn nrand<R: Rng>(shape: (usize, usize), rng: &mut R) -> Array2<f64> {
+fn nrand(shape: (usize, usize), rng: &mut impl Rng) -> Array2<f64> {
     let mut m = Array2::zeros(shape);
     fill_rand(&mut m, rng);
     m
@@ -183,7 +184,7 @@ where
 }
 
 #[cfg(not(feature = "direct_blas"))]
-fn randmatmul<R: Rng>(n: usize, mut rng: R) -> Array2<f64> {
+fn randmatmul(n: usize, mut rng: impl Rng) -> Array2<f64> {
     let a = nrand((n, n), &mut rng);
     let b = nrand((n, n), &mut rng);
 
@@ -259,7 +260,7 @@ fn to_float(d: Duration) -> f64 {
 }
 
 #[inline]
-fn measure_best<F: FnMut()>(niters: u32, mut op: F) -> Duration {
+fn measure_best(niters: u32, mut op: impl FnMut()) -> Duration {
     (0..niters)
         .map(move |_| {
             let t = Instant::now();
