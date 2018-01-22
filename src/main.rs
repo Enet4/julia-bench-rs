@@ -53,10 +53,11 @@ fn nrand<R: Rng>(shape: (usize, usize), rng: &mut R) -> Array2<f64> {
 }
 
 fn fib(n: i32) -> i32 {
+    let n = black_box(n); // prevent over-optimization
     if n < 2 {
         n
     } else {
-        fib(black_box(n - 1)) + fib(black_box(n - 2))
+        fib(n - 1) + fib(n - 2)
     }
 }
 
@@ -82,7 +83,7 @@ fn mandelperf() -> Vec<u32> {
         .zip(&mut m)
     {
         *v = mandel(Complex64::new((j - 20) as f64 / 10.,
-            ((i - 10) as f64 / 10.)));
+            (i - 10) as f64 / 10.));
     }
 
     m
@@ -275,13 +276,13 @@ fn main() {
     // fib(20)
     assert_eq!(fib(20), 6765);
     let mut f = 0i32;
-    let fibarg = black_box(20);
+    let fibarg = 20;
     let tmin = measure_best(NITER, || {
         for _ in 0..1000 {
             f = f.wrapping_add(fib(fibarg));
         }
     });
-    print_perf("fib", to_float(tmin) / 1000.0);
+    print_perf("recursion_fibonacci", to_float(tmin) / 1000.0);
 
     // parse_int
     let tmin = measure_best(NITER, || {
@@ -292,7 +293,7 @@ fn main() {
             assert_eq!(m, n);
         }
     });
-    print_perf("parse_int", to_float(tmin) / 100.0);
+    print_perf("parse_integers", to_float(tmin) / 100.0);
 
     let mandel_sum_init = black_box(0u32);
     let mut mandel_sum2 = mandel_sum_init;
@@ -307,14 +308,14 @@ fn main() {
         }
     });
     assert_eq!(mandel_sum2, 14791 * NITER);
-    print_perf("mandel", to_float(tmin) / 100.0);
+    print_perf("userfunc_mandelbrot", to_float(tmin) / 100.0);
 
     // sort
     let tmin = measure_best(NITER, || {
         let mut d = myrand(5000, &mut rng);
         quicksort(&mut d, 0);
     });
-    print_perf("quicksort", to_float(tmin));
+    print_perf("recursive_quicksort", to_float(tmin));
 
     // pi sum
     let mut pi = 0.;
@@ -322,25 +323,25 @@ fn main() {
         pi = pisum();
     });
     assert!(f64::abs(pi - 1.644834071848065) < 1e-12);
-    print_perf("pi_sum", to_float(tmin));
+    print_perf("iteration_pi_sum", to_float(tmin));
 
     // rand mat stat
     let mut r = (0., 0.);
     let tmin = measure_best(NITER, || {
         r = black_box(randmatstat(1000));
     });
-    print_perf("rand_mat_stat", to_float(tmin));
+    print_perf("matrix_statistics", to_float(tmin));
 
     // rand mat mul
     let tmin = measure_best(NITER, || {
         let c = randmatmul(1000, &mut rng);
         check_randmatmul(c);
     });
-    print_perf("rand_mat_mul", to_float(tmin));
+    print_perf("matrix_multiply", to_float(tmin));
 
     // printfd
     let tmin = measure_best(NITER, || {
         printfd(100000);
     });
-    print_perf("printfd", to_float(tmin));
+    print_perf("print_to_file", to_float(tmin));
 }
