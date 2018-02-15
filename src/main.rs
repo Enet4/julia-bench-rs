@@ -119,26 +119,18 @@ fn randmatstat(t: usize) -> (f64, f64) {
         let p = { // P = [a b c d]
             let mut p = Array2::<f64>::zeros((n, 4 * n));
             let n = n as isize;
-            #[allow(unsafe_code)]
             p.slice_mut(s![.., 0..n]).assign(&a);
-            #[allow(unsafe_code)]
             p.slice_mut(s![.., n..2*n]).assign(&b);
-            #[allow(unsafe_code)]
             p.slice_mut(s![.., 2*n..3*n]).assign(&c);
-            #[allow(unsafe_code)]
             p.slice_mut(s![.., 3*n..4*n]).assign(&d);
             p
         };
         let q = { // Q = [a b ; c d]
             let mut q = Array2::<f64>::zeros((2 * n, 2 * n));
             let n = n as isize;
-            #[allow(unsafe_code)]
             q.slice_mut(s![0..n, 0..n]).assign(&a);
-            #[allow(unsafe_code)]
             q.slice_mut(s![0..n, n..2*n]).assign(&b);
-            #[allow(unsafe_code)]
             q.slice_mut(s![n..2*n, 0..n]).assign(&c);
-            #[allow(unsafe_code)]
             q.slice_mut(s![n..2*n, n..2*n]).assign(&d);
             q
         };
