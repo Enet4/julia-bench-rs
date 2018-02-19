@@ -312,7 +312,7 @@ fn main() {
     // pi sum
     let mut pi = 0.;
     let tmin = measure_best(NITER, || {
-        pi = pisum();
+        pi = black_box(pisum());
     });
     assert!(f64::abs(pi - 1.644834071848065) < 1e-12);
     print_perf("iteration_pi_sum", to_float(tmin));
