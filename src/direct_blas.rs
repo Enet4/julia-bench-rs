@@ -99,7 +99,6 @@ pub fn randmatstat(t: usize) -> (f64, f64) {
 }
 
 /// Calculate the trace of a square matrix
-#[cfg(feature = "direct_blas")]
 #[inline]
 fn trace<'a, T>(m: &'a [T], n: usize) -> T
 where
