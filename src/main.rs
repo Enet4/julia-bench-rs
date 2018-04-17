@@ -307,7 +307,7 @@ fn main() {
         let mut d = myrand(5000, &mut rng);
         quicksort(&mut d, 0);
     });
-    print_perf("recursive_quicksort", to_float(tmin));
+    print_perf("recursion_quicksort", to_float(tmin));
 
     // pi sum
     let mut pi = 0.;
