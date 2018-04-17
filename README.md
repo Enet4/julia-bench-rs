@@ -39,9 +39,9 @@ When comparing with the C (`-O3`) and Julia benchmarks on the same machine:
 | cputime |  lang
 |---------|--------------------
 | 1.000   |  C
-| 1.142   |  Rust (direct BLAS)
+| 1.126   |  Rust (direct BLAS)
 | 1.180   |  Julia
-| 1.224   |  Rust
+| 1.196   |  Rust
 
 While most benchmarks are faster in Rust, the `fibonacci` and `mandelbrot` are not very well optimized, resulting in a significant loss of the geometric mean. These results also depend on the toolchain used. The toolchain `nightly-2017-10-24` is older, but would yield slightly better metrics.
 
