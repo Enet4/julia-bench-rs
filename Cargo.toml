@@ -1,6 +1,6 @@
 [package]
 authors = ["Eduardo Pinho <enet4mikeenet@gmail.com>"]
-license = "MIT/Apache-2.0"
+license = "MIT OR Apache-2.0"
 name = "julia-bench"
 version = "0.1.0"
 
