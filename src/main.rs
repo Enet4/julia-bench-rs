@@ -21,6 +21,7 @@ extern crate ndarray;
 
 use std::time::{Duration, Instant};
 use std::u32;
+use std::fmt::Write as FmtWrite;
 use std::fs::OpenOptions;
 use std::io::{BufWriter, Write};
 
@@ -271,10 +272,12 @@ fn main() {
 
     // parse_int
     let tmin = measure_best(NITER, || {
+        let mut str_buf = String::with_capacity(8);
         for _ in 0..1000 * 100 {
             let n: u32 = rng.gen();
-            let s = format!("{:x}", n);
-            let m = u32::from_str_radix(&s, 16).unwrap();
+            str_buf.clear();
+            write!(&mut str_buf, "{:x}", n).unwrap();
+            let m = u32::from_str_radix(&str_buf, 16).unwrap();
             assert_eq!(m, n);
         }
     });
