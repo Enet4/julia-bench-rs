@@ -38,10 +38,10 @@ The Rust benchmarks (using nightly-2018-04-16) were compared with C (`-O3`) and 
 
 | cputime |  lang
 |---------|--------------------
+| 0.956   |  Rust (direct BLAS)
 | 1.000   |  C
-| 1.000   |  Rust (direct BLAS)
-| 1.060   |  Rust
-| 1.180   |  Julia
+| 1.008   |  Rust
+| 1.179   |  Julia
 
 Most benchmarks are faster in Rust than in Julia, sometimes even faster than C. The `fibonacci` benchmark relies on `black_box`, and so might not be very well optimized. These results also depend on the toolchain used. The toolchain `nightly-2017-10-24` is older, but would yield slightly better metrics.
 
