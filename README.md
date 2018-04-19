@@ -32,18 +32,18 @@ cargo run --release --features direct_blas
 
 ## Results
 
-When comparing with the C (`-O3`) and Julia benchmarks on the same machine:
+The Rust benchmarks (using nightly-2018-04-16) were compared with C (`-O3`) and Julia on the same machine.
 
 ![](benchmarks.svg)
 
 | cputime |  lang
 |---------|--------------------
 | 1.000   |  C
-| 1.126   |  Rust (direct BLAS)
+| 1.000   |  Rust (direct BLAS)
+| 1.060   |  Rust
 | 1.180   |  Julia
-| 1.196   |  Rust
 
-While most benchmarks are faster in Rust, the `fibonacci` and `mandelbrot` are not very well optimized, resulting in a significant loss of the geometric mean. These results also depend on the toolchain used. The toolchain `nightly-2017-10-24` is older, but would yield slightly better metrics.
+Most benchmarks are faster in Rust than in Julia, sometimes even faster than C. The `fibonacci` benchmark relies on `black_box`, and so might not be very well optimized. These results also depend on the toolchain used. The toolchain `nightly-2017-10-24` is older, but would yield slightly better metrics.
 
 ## License
 
