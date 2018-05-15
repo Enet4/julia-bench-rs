@@ -18,7 +18,7 @@ The project is experimental, and might still have bugs or unfair optimizations. 
 
 ## Building and running
 
-This program uses a specific Rust **nightly** toolchain to work. With rustup, installing the toolchain mentioned in [rust-toolchain](rust-toolchain) is sufficient. Then:
+With rustup, installing the toolchain mentioned in [rust-toolchain](rust-toolchain) is sufficient. Then:
 
 ```bash
 cargo run --release

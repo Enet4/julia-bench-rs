@@ -1,11 +1,10 @@
-#![feature(test)]
 #![deny(unsafe_code)]
 
 extern crate itertools;
 extern crate mersenne_twister;
 extern crate num;
 extern crate rand;
-extern crate test;
+extern crate volatile;
 
 // Use BLAS directly
 #[cfg(feature = "direct_blas")]
@@ -24,9 +23,9 @@ use std::u32;
 use std::fs::OpenOptions;
 use std::io::{BufWriter, Write};
 
-use test::black_box;
 use num::complex::Complex64;
 use rand::Rng;
+use volatile::Volatile;
 
 mod util;
 use util::{gen_rng, myrand};
@@ -53,11 +52,11 @@ fn nrand<R: Rng>(shape: (usize, usize), rng: &mut R) -> Array2<f64> {
 }
 
 fn fib(n: i32) -> i32 {
-    let n = black_box(n); // prevent over-optimization
-    if n < 2 {
-        n
+    let n = Volatile::new(n);
+    if n.read() < 2 {
+        n.read()
     } else {
-        fib(n - 1) + fib(n - 2)
+        fib(n.read() - 1) + fib(n.read() - 2)
     }
 }
 
@@ -261,10 +260,10 @@ fn main() {
     // fib(20)
     assert_eq!(fib(20), 6765);
     let mut f = 0i32;
-    let fibarg = 20;
+    let fibarg = Volatile::new(20);
     let tmin = measure_best(NITER, || {
         for _ in 0..1000 {
-            f = f.wrapping_add(fib(fibarg));
+            f = f.wrapping_add(fib(fibarg.read()));
         }
     });
     print_perf("recursion_fibonacci", to_float(tmin) / 1000.0);
@@ -280,7 +279,7 @@ fn main() {
     });
     print_perf("parse_integers", to_float(tmin) / 100.0);
 
-    let mandel_sum_init = black_box(0u32);
+    let mandel_sum_init = 0u32;
     let mut mandel_sum2 = mandel_sum_init;
     let tmin = measure_best(NITER, || {
         for j in 0..100 {
@@ -303,17 +302,17 @@ fn main() {
     print_perf("recursion_quicksort", to_float(tmin));
 
     // pi sum
-    let mut pi = 0.;
+    let mut pi = Volatile::new(0.);
     let tmin = measure_best(NITER, || {
-        pi = black_box(pisum());
+        pi.write(pisum());
     });
-    assert!(f64::abs(pi - 1.644834071848065) < 1e-12);
+    assert!(f64::abs(pi.read() - 1.644834071848065) < 1e-12);
     print_perf("iteration_pi_sum", to_float(tmin));
 
     // rand mat stat
-    let mut r = (0., 0.);
+    let mut r = Volatile::new((0., 0.));
     let tmin = measure_best(NITER, || {
-        r = black_box(randmatstat(1000));
+        r.write(randmatstat(1000));
     });
     print_perf("matrix_statistics", to_float(tmin));
 
