@@ -37,7 +37,7 @@ mod direct_blas;
 use direct_blas::{randmatstat, randmatmul, check_randmatmul};
 
 #[cfg(not(feature = "direct_blas"))]
-use ndarray::Array2;
+use ndarray::{Array2, ArrayView2, ArrayViewMut2};
 #[cfg(not(feature = "direct_blas"))]
 use util::fill_rand;
 #[cfg(not(feature = "direct_blas"))]
@@ -99,28 +99,42 @@ fn pisum() -> f64 {
 fn randmatstat(t: usize) -> (f64, f64) {
     let mut rng = gen_rng(1234u64);
 
-    let n = 5;
+    const N: usize = 5;
+
+    fn nrand<R: Rng>(rng: &mut R) -> [f64; N*N] {
+        let mut m = [0.; N* N];
+        fill_rand(&mut m, rng);
+        m
+    }
 
     let mut v = vec![0.; t];
     let mut w = vec![0.; t];
 
     for (ve, we) in v.iter_mut().zip(w.iter_mut()) {
-        let a = nrand((n, n), &mut rng);
-        let b = nrand((n, n), &mut rng);
-        let c = nrand((n, n), &mut rng);
-        let d = nrand((n, n), &mut rng);
+        let a = nrand(&mut rng);
+        let a = ArrayView2::from_shape((N, N), &a).unwrap();
+        let b = nrand(&mut rng);
+        let b = ArrayView2::from_shape((N, N), &b).unwrap();
+        let c = nrand(&mut rng);
+        let c = ArrayView2::from_shape((N, N), &c).unwrap();
+        let d = nrand(&mut rng);
+        let d = ArrayView2::from_shape((N, N), &d).unwrap();
+
+        let mut p = [0.; N * N * 4];
         let p = { // P = [a b c d]
-            let mut p = Array2::<f64>::zeros((n, 4 * n));
-            let n = n as isize;
+            let mut p = ArrayViewMut2::from_shape((N, 4 * N), &mut p).unwrap();
+            let n = N as isize;
             p.slice_mut(s![.., 0..n]).assign(&a);
             p.slice_mut(s![.., n..2*n]).assign(&b);
             p.slice_mut(s![.., 2*n..3*n]).assign(&c);
             p.slice_mut(s![.., 3*n..4*n]).assign(&d);
             p
         };
+
+        let mut q = [0.; 2 * N * 2 * N];
         let q = { // Q = [a b ; c d]
-            let mut q = Array2::<f64>::zeros((2 * n, 2 * n));
-            let n = n as isize;
+            let mut q = ArrayViewMut2::from_shape((2 * N, 2 * N), &mut q).unwrap();
+            let n = N as isize;
             q.slice_mut(s![0..n, 0..n]).assign(&a);
             q.slice_mut(s![0..n, n..2*n]).assign(&b);
             q.slice_mut(s![n..2*n, 0..n]).assign(&c);
