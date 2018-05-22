@@ -53,7 +53,6 @@ fn nrand<R: Rng>(shape: (usize, usize), rng: &mut R) -> Array2<f64> {
 }
 
 fn fib(n: i32) -> i32 {
-    let n = black_box(n); // prevent over-optimization
     if n < 2 {
         n
     } else {
@@ -246,12 +245,13 @@ fn to_float(d: Duration) -> f64 {
 
 #[inline]
 fn measure_best<F: FnMut()>(niters: u32, mut op: F) -> Duration {
-    (0..niters)
+    let results: Vec<_> = (0..niters)
         .map(move |_| {
             let t = Instant::now();
             op();
             t.elapsed()
-        }).min().unwrap()
+        }).collect();
+    *results.iter().min().unwrap()
 }
 
 fn main() {
@@ -275,7 +275,7 @@ fn main() {
             let n: u32 = rng.gen();
             let s = format!("{:x}", n);
             let m = u32::from_str_radix(&s, 16).unwrap();
-            assert_eq!(m, n);
+            debug_assert_eq!(m, n);
         }
     });
     print_perf("parse_integers", to_float(tmin) / 100.0);
@@ -287,7 +287,7 @@ fn main() {
             let m = mandelperf();
             if j == 0 {
                 let mandel_sum: u32 = m.iter().sum();
-                assert_eq!(mandel_sum, 14791);
+                debug_assert_eq!(mandel_sum, 14791);
                 mandel_sum2 += mandel_sum;
             }
         }
