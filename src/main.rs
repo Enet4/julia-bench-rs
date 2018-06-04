@@ -53,7 +53,6 @@ fn nrand<R: Rng>(shape: (usize, usize), rng: &mut R) -> Array2<f64> {
 }
 
 fn fib(n: i32) -> i32 {
-    let n = black_box(n); // prevent over-optimization
     if n < 2 {
         n
     } else {
@@ -264,9 +263,10 @@ fn main() {
     let fibarg = 20;
     let tmin = measure_best(NITER, || {
         for _ in 0..1000 {
-            f = f.wrapping_add(fib(fibarg));
+            f = f.wrapping_add(fib(black_box(fibarg)));
         }
     });
+    black_box(f); // prevent over-optimization from unused f
     print_perf("recursion_fibonacci", to_float(tmin) / 1000.0);
 
     // parse_int
