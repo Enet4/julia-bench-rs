@@ -52,11 +52,10 @@ fn nrand<R: Rng>(shape: (usize, usize), rng: &mut R) -> Array2<f64> {
 }
 
 fn fib(n: i32) -> i32 {
-    let n = Volatile::new(n);
-    if n.read() < 2 {
-        n.read()
+    if n < 2 {
+        n
     } else {
-        fib(n.read() - 1) + fib(n.read() - 2)
+        fib(n - 1) + fib(n - 2)
     }
 }
 
@@ -266,6 +265,7 @@ fn main() {
             f = f.wrapping_add(fib(fibarg.read()));
         }
     });
+    Volatile::new(f).read();
     print_perf("recursion_fibonacci", to_float(tmin) / 1000.0);
 
     // parse_int
