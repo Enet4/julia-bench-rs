@@ -1,5 +1,7 @@
 language: rust
 rust:
+  - stable
+  - beta
   - nightly-2018-01-04
   - nightly
 addons:
