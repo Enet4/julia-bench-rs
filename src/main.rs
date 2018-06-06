@@ -275,7 +275,7 @@ fn main() {
             let n: u32 = rng.gen();
             let s = format!("{:x}", n);
             let m = u32::from_str_radix(&s, 16).unwrap();
-            debug_assert_eq!(m, n);
+            assert_eq!(m, n);
         }
     });
     print_perf("parse_integers", to_float(tmin) / 100.0);
@@ -287,7 +287,7 @@ fn main() {
             let m = mandelperf();
             if j == 0 {
                 let mandel_sum: u32 = m.iter().sum();
-                debug_assert_eq!(mandel_sum, 14791);
+                assert_eq!(mandel_sum, 14791);
                 mandel_sum2 += mandel_sum;
             }
         }
