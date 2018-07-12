@@ -9,7 +9,8 @@ addons:
       - gfortran
       - libopenblas-dev
 script:
- - cargo build && cargo build --features direct_blas
+  - mv rust-toolchain .no.rust-toolchain
+  - cargo build && cargo build --features direct_blas
 matrix:
   allow_failures:
     - rust: nightly
