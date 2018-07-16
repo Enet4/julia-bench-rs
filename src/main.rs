@@ -245,12 +245,13 @@ fn to_float(d: Duration) -> f64 {
 
 #[inline]
 fn measure_best<F: FnMut()>(niters: u32, mut op: F) -> Duration {
-    (0..niters)
+    let results: Vec<_> = (0..niters)
         .map(move |_| {
             let t = Instant::now();
             op();
             t.elapsed()
-        }).min().unwrap()
+        }).collect();
+    *results.iter().min().unwrap()
 }
 
 fn main() {
