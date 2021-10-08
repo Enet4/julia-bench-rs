@@ -1,6 +1,6 @@
 # Julia's micro-bench in Rust
 
-[![Build Status](https://travis-ci.org/Enet4/julia-bench-rs.svg?branch=master)](https://travis-ci.org/Enet4/julia-bench-rs) [![dependency status](https://deps.rs/repo/github/Enet4/julia-bench-rs/status.svg)](https://deps.rs/repo/github/Enet4/julia-bench-rs)
+[![Rust CI](https://github.com/Enet4/julia-bench-rs/actions/workflows/rust.yml/badge.svg)](https://github.com/Enet4/julia-bench-rs/actions/workflows/rust.yml) [![dependency status](https://deps.rs/repo/github/Enet4/julia-bench-rs/status.svg)](https://deps.rs/repo/github/Enet4/julia-bench-rs)
 
 This repository attempts to replicate the [micro benchmark](https://github.com/JuliaLang/julia/tree/master/test/perf/micro) in the Julia repository ([/test/perf](https://github.com/JuliaLang/julia/tree/master/test/perf)) with a Rust implementation, which aims to make a general performance comparison among other programming languages.
 
