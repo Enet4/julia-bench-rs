@@ -1,17 +1,12 @@
 #![feature(test)]
 #![deny(unsafe_code)]
 
-extern crate itertools;
-extern crate mersenne_twister;
-extern crate num;
-extern crate rand;
 extern crate test;
 
 // Use BLAS directly
 #[cfg(feature = "direct_blas")]
 extern crate cblas;
 
-#[cfg(feature = "direct_blas")]
 extern crate blas_src;
 
 // Use ndarray (with BLAS implementation)
@@ -20,7 +15,6 @@ extern crate blas_src;
 extern crate ndarray;
 
 use std::time::{Duration, Instant};
-use std::u32;
 use std::fs::OpenOptions;
 use std::io::{BufWriter, Write};
 
@@ -160,11 +154,11 @@ fn randmatstat(t: usize) -> (f64, f64) {
 /// Calculate the trace of a square matrix
 #[cfg(not(feature = "direct_blas"))]
 #[inline]
-fn trace_arr<'a, T: 'a>(m: &'a Array2<T>) -> T
+fn trace_arr<'a, T>(m: &'a Array2<T>) -> T
 where
-    T: Zero + Clone
+    T: Zero + Clone + 'a
 {
-    m.diag().scalar_sum()
+    m.diag().sum()
 }
 
 #[cfg(not(feature = "direct_blas"))]
@@ -193,7 +187,7 @@ fn test_quicksort() {
 }
 
 fn quicksort(a: &mut [f64], mut lo: usize) {
-    let hi = a.len() as usize - 1;
+    let hi = a.len() - 1;
     let mut i: usize = lo;
     // j is isize because it can be -1
     let mut j: isize = hi as isize;
@@ -230,12 +224,12 @@ fn printfd(n: usize) {
         .write(true).open("/dev/null").unwrap();
     let mut f = BufWriter::new(f);
     for i in 0..n {
-        writeln!(f, "{} {}", i, i).unwrap();
+        writeln!(f, "{i} {i}").unwrap();
     }
 }
 
 fn print_perf(name: &str, t: f64) {
-    println!("rust,{},{:.6}", name, t * 1000.);
+    println!("rust,{name},{:.6}", t * 1000.);
 }
 
 /// convert duration to float in seconds
@@ -272,8 +266,8 @@ fn main() {
     // parse_int
     let tmin = measure_best(NITER, || {
         for _ in 0..1000 * 100 {
-            let n: u32 = rng.gen();
-            let s = format!("{:x}", n);
+            let n: u32 = rng.random();
+            let s = format!("{n:x}");
             let m = u32::from_str_radix(&s, 16).unwrap();
             assert_eq!(m, n);
         }

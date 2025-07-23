@@ -18,7 +18,10 @@ The project is experimental, and might still have bugs or unfair optimizations. 
 
 ## Building and running
 
-This program uses a specific Rust **nightly** toolchain to work. With rustup, installing the toolchain mentioned in [rust-toolchain](rust-toolchain) is sufficient. Then:
+This program uses a specific Rust **nightly** toolchain to work.
+If you are using [Rustup](), it should automatically pick up the toolchain mentioned in [rust-toolchain.toml](rust-toolchain.toml).~
+
+Then:
 
 ```bash
 cargo run --release
@@ -43,7 +46,7 @@ The Rust benchmarks (using nightly-2018-04-16) were compared with C (`-O3`) and 
 | 1.060   |  Rust
 | 1.180   |  Julia
 
-Most benchmarks are faster in Rust than in Julia, sometimes even faster than C. The `fibonacci` benchmark relies on `black_box`, and so might not be very well optimized. These results also depend on the toolchain used. The toolchain `nightly-2017-10-24` is older, but would yield slightly better metrics.
+Most benchmarks are faster in Rust than in Julia, sometimes even faster than C. The `fibonacci` benchmark relies on `black_box`, and so might not be very well optimized. These results also depend on the toolchain used.
 
 ## License
 
