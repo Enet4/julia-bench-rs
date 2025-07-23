@@ -2,9 +2,9 @@ name: Rust
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 env:
   CARGO_TERM_COLOR: always
@@ -16,10 +16,9 @@ jobs:
 
     steps:
     - run: sudo apt-get install gcc gfortran libopenblas-dev
-    - uses: actions/checkout@v2
-    - uses: actions-rs/toolchain@v1
+    - uses: actions/checkout@v4
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
-    - uses: actions-rs/cargo@v1
-      with:
-        command: test
+        cache: true
+    - run: cargo test
+
